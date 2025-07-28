@@ -15,4 +15,7 @@ public class FakeStoreCategoryResponseDTO {
     private String message;
 
     private List<String> categories;
+    public List<String> getCategories() {
+        return categories; // Add this getter method
+    }
 }

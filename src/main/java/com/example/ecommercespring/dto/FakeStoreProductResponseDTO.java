@@ -13,4 +13,7 @@ public class FakeStoreProductResponseDTO {
 	private ProductDTO product;
 	private String message;
 	private String status;
+	public ProductDTO getProduct() {
+		return product; // Add this getter method
+	}
 }

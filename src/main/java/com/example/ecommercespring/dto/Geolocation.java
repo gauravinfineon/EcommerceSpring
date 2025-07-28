@@ -3,10 +3,10 @@ import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-
-public class CategoryDTO {
-    private String name;
+public class Geolocation{
+	private Object lat;
+	private Object jsonMemberLong;
 }

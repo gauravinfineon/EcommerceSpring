@@ -1,0 +1,483 @@
+package com.example.ecommercespring.configuration;
+
+import com.example.ecommercespring.gateway.api.FakeStoreCategoryApi;
+import com.example.ecommercespring.gateway.api.FakeStoreProductApi;
+import com.example.ecommercespring.gateway.api.FakeStoreUserApi;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+@Configuration
+public class RetrofitConfig {
+
+
+    @Bean
+    public Retrofit retrofit() {
+        return new Retrofit.Builder()
+                .baseUrl("https://fakestoreapi.in/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
+    @Bean
+    public FakeStoreCategoryApi fakeStoreCategoryApi(Retrofit retrofit) {
+        return retrofit.create(FakeStoreCategoryApi.class);
+    }
+
+    @Bean
+    public FakeStoreProductApi fakeStoreProductApi(Retrofit retrofit) {
+        return retrofit.create(FakeStoreProductApi.class);
+    }
+    @Bean
+    public FakeStoreUserApi fakeStoreUserApi(Retrofit retrofit) {
+        return retrofit.create(FakeStoreUserApi.class);
+    }
+
+}package com.example.ecommercespring.controllers;
+
+import com.example.ecommercespring.dto.CategoryDTO;
+import com.example.ecommercespring.services.ICategoryService;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/categories")
+public class CategoryController {
+
+    private final ICategoryService categoryService;
+
+    public CategoryController(ICategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CategoryDTO>> getAllCategories() throws Exception {
+        List<CategoryDTO> result = this.categoryService.getAllCategories();
+        return ResponseEntity.ok(result);
+    }
+
+}package com.example.ecommercespring.controllers;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.ecommercespring.services.IProductService;
+import com.example.ecommercespring.dto.ProductDTO;
+
+@RestController
+@RequestMapping("/api/products")
+public class ProductController {
+
+    private final IProductService productService;
+
+    public ProductController(IProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) throws Exception {
+        ProductDTO result = this.productService.getProductById(id);
+
+        return ResponseEntity.ok(result);
+
+    }
+
+}package com.example.ecommercespring.controllers;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.example.ecommercespring.services.IUserService;
+import com.example.ecommercespring.dto.UserDTO;
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+    private final IUserService userService;
+    public UserController(IUserService userService){
+        this.userService=userService;
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) throws Exception {
+        UserDTO result = this.userService.getUserById(id);
+
+        return ResponseEntity.ok(result);
+
+    }
+
+     
+}
+package com.example.ecommercespring.dto;
+import lombok.*;
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Address{
+	private String zipcode;
+	private String number;
+	private String city;
+	private String street;
+	private Geolocation geolocation;
+}
+package com.example.ecommercespring.dto;
+import lombok.*;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+
+public class CategoryDTO {
+    private String name;
+}package com.example.ecommercespring.dto;
+
+import lombok.*;
+
+import java.util.List;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class FakeStoreCategoryResponseDTO {
+    private String status;
+
+    private String message;
+
+    private List<String> categories;
+}package com.example.ecommercespring.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class FakeStoreProductResponseDTO {
+	private ProductDTO product;
+	private String message;
+	private String status;
+}package com.example.ecommercespring.dto;
+import lombok.*;
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class FakeStoreUserResponseDTO{
+    private UserDTO user;
+    private String message;
+    private String status;
+}package com.example.ecommercespring.dto;
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Geolocation{
+	private Object lat;
+	private Object jsonMemberLong;
+}
+package com.example.ecommercespring.dto;
+import lombok.*;
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Name{
+	private String firstname;
+	private String lastname;
+}
+package com.example.ecommercespring.dto;
+
+import lombok.*;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProductDTO{
+	private String image;
+	private String color;
+	private int price;
+	private String description;
+	private int discount;
+	private String model;
+	private int id;
+	private String title;
+	private String category;
+	private String brand;
+	private boolean popular;
+}package com.example.ecommercespring.dto;
+import com.example.ecommercespring.dto.Address;
+import com.example.ecommercespring.dto.Name;
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
+public class UserDTO{
+	private String password;
+	 private Address address;
+	private String phone;
+	private Name name;
+	private int id;
+	private String email;
+	private String username;
+}
+package com.example.ecommercespring.gateway.api;
+
+import java.io.IOException;
+
+import com.example.ecommercespring.dto.FakeStoreCategoryResponseDTO;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+
+public interface FakeStoreCategoryApi {
+
+    @GET("products/category")
+    Call<FakeStoreCategoryResponseDTO> getAllFakeCategories() throws IOException;
+}package com.example.ecommercespring.gateway.api;
+import java.io.IOException;
+
+import com.example.ecommercespring.dto.FakeStoreProductResponseDTO;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+public interface FakeStoreProductApi {
+    @GET("products/{id}")
+    Call<FakeStoreProductResponseDTO> getFakeProduct(@Path("id") Long id);
+}package com.example.ecommercespring.gateway.api;
+import com.example.ecommercespring.dto.FakeStoreUserResponseDTO;
+import retrofit2.Call;
+import retrofit2.http.*;
+public interface FakeStoreUserApi {
+    @GET("users/{id}")
+    Call<FakeStoreUserResponseDTO> getFakeUser(@Path("id") Long id);
+
+    
+}
+package com.example.ecommercespring.gateway;
+
+import com.example.ecommercespring.dto.CategoryDTO;
+import com.example.ecommercespring.dto.FakeStoreCategoryResponseDTO;
+import com.example.ecommercespring.gateway.api.FakeStoreCategoryApi;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.List;
+
+@Component
+public class FakeStoreCategoryGateway implements ICategoryGateway{
+
+    private final FakeStoreCategoryApi fakeStoreCategoryApi;
+
+    public FakeStoreCategoryGateway(FakeStoreCategoryApi fakeStoreCategoryApi) {
+        this.fakeStoreCategoryApi = fakeStoreCategoryApi;
+    }
+
+    @Override
+    public List<CategoryDTO> getAllCategories() throws IOException {
+        // 1. Make the HTTP request to the FakeStore API to fetch all categories
+        FakeStoreCategoryResponseDTO response = this.fakeStoreCategoryApi.getAllFakeCategories().execute().body();
+
+        // 2. Check if the response is null and throw an IOException if it is
+        if(response == null) {
+            throw new IOException("Failed to fetch categories from FakeStore API");
+        }
+
+        // 3. Map the response to a list of CategoryDTO objects
+        return response.getCategories().stream()
+                .map(category -> CategoryDTO.builder()
+                        .name(category)
+                        .build())
+                .toList();
+    }
+}package com.example.ecommercespring.gateway;
+
+import com.example.ecommercespring.dto.ProductDTO;
+import com.example.ecommercespring.gateway.api.FakeStoreProductApi;
+
+import org.springframework.stereotype.Component;
+
+import com.example.ecommercespring.dto.FakeStoreProductResponseDTO;
+
+@Component
+public class FakeStoreProductGateway implements IProductGateway {
+
+    private final FakeStoreProductApi fakeStoreProductApi;
+    public FakeStoreProductGateway(FakeStoreProductApi fakeStoreProductApi) {
+        this.fakeStoreProductApi = fakeStoreProductApi;
+    }
+
+    @Override
+    public ProductDTO getProductById(Long id) throws Exception {
+        FakeStoreProductResponseDTO response = this.fakeStoreProductApi.getFakeProduct(id).execute().body();
+        if (response == null) {
+            throw new Exception("Product not found");
+        }
+
+        return response.getProduct();
+    }
+}package com.example.ecommercespring.gateway;
+import com.example.ecommercespring.dto.UserDTO;
+import com.example.ecommercespring.gateway.api.FakeStoreUserApi;
+import com.example.ecommercespring.dto.FakeStoreUserResponseDTO;
+import retrofit2.Call;
+import org.springframework.stereotype.Component;
+import com.example.ecommercespring.gateway.IUserGateway;
+import retrofit2.Retrofit;
+@Component
+public class FakeStoreUserGateway implements IUserGateway {
+    private final FakeStoreUserApi fakeStoreUserApi;
+    public FakeStoreUserGateway(FakeStoreUserApi fakeStoreUserApi) {
+        this.fakeStoreUserApi = fakeStoreUserApi;
+    }
+
+    @Override
+    public UserDTO getUserById(Long id) throws Exception {
+        FakeStoreUserResponseDTO response = fakeStoreUserApi.getFakeUser(id).execute().body();
+        if (response == null || response.getUser() == null) {
+            throw new Exception("User not found");
+        }
+        return response.getUser();
+    }
+
+}
+package com.example.ecommercespring.gateway;
+
+import com.example.ecommercespring.dto.CategoryDTO;
+
+import java.io.IOException;
+import java.util.*;
+
+public interface ICategoryGateway {
+
+    List<CategoryDTO> getAllCategories() throws IOException;
+}
+package com.example.ecommercespring.gateway;
+
+import com.example.ecommercespring.dto.ProductDTO;
+
+public interface IProductGateway {
+
+    ProductDTO getProductById(Long id) throws Exception;
+}package com.example.ecommercespring.gateway;
+
+import com.example.ecommercespring.dto.UserDTO;
+import java.io.IOException;
+public interface IUserGateway {
+    UserDTO getUserById(Long id) throws Exception;
+
+}
+package com.example.ecommercespring.services;
+
+import com.example.ecommercespring.dto.CategoryDTO;
+import com.example.ecommercespring.gateway.ICategoryGateway;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.List;
+@Service
+public class FakeStoreCategoryService implements ICategoryService {
+
+    private final ICategoryGateway categoryGateway;
+
+    public FakeStoreCategoryService(ICategoryGateway categoryGateway) {
+        this.categoryGateway = categoryGateway;
+    }
+
+    @Override
+    public List<CategoryDTO> getAllCategories() throws IOException {
+        return this.categoryGateway.getAllCategories();
+    }
+}package com.example.ecommercespring.services;
+
+import org.springframework.stereotype.Service;
+
+import com.example.ecommercespring.dto.ProductDTO;
+import com.example.ecommercespring.gateway.IProductGateway;
+
+@Service
+public class FakeStoreProductService implements IProductService {
+
+    private final IProductGateway productGateway;
+
+    public FakeStoreProductService(IProductGateway productGateway) {
+        this.productGateway = productGateway;
+    }
+
+    @Override
+    public ProductDTO getProductById(Long id) throws Exception {
+        return this.productGateway.getProductById(id);
+    }
+}package com.example.ecommercespring.services;
+
+import org.springframework.stereotype.Service;
+import com.example.ecommercespring.gateway.IUserGateway;
+import com.example.ecommercespring.dto.UserDTO;
+
+@Service
+public class FakeStoreUserService implements IUserService {
+    private final IUserGateway userGateway;
+    public FakeStoreUserService(IUserGateway userGateway) {
+        this.userGateway = userGateway;
+    }
+
+    @Override
+    public UserDTO getUserById(Long id) throws Exception {
+        return this.userGateway.getUserById(id);
+    }
+
+ 
+    
+}
+package com.example.ecommercespring.services;
+
+import com.example.ecommercespring.dto.CategoryDTO;
+
+import java.util.List;
+
+public interface ICategoryService {
+     List<CategoryDTO> getAllCategories() throws Exception;
+
+}
+ package com.example.ecommercespring.services;
+
+import com.example.ecommercespring.dto.ProductDTO;
+
+public interface IProductService {
+    ProductDTO getProductById(Long id) throws Exception;
+
+    
+}package com.example.ecommercespring.services;
+import com.example.ecommercespring.dto.UserDTO;
+
+public interface IUserService {
+    UserDTO getUserById(Long id) throws Exception;
+    
+}

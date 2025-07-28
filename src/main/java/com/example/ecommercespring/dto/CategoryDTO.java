@@ -1,5 +1,4 @@
 package com.example.ecommercespring.dto;
-
 import lombok.*;
 
 @Getter
@@ -9,6 +8,4 @@ import lombok.*;
 @Builder
 public class CategoryDTO {
     private String name;
-
-
 }

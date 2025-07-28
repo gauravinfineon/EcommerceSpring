@@ -10,20 +10,24 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Configuration
 public class RetrofitConfig {
+
+
     @Bean
-    public Retrofit retrofit(){
+    public Retrofit retrofit() {
         return new Retrofit.Builder()
                 .baseUrl("https://fakestoreapi.in/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
-    @Bean
-    public FakeStoreCategoryApi fakeStoreCategoryApi( Retrofit retrofit) {
-        return retrofit.create(FakeStoreCategoryApi.class);
 
+    @Bean
+    public FakeStoreCategoryApi fakeStoreCategoryApi(Retrofit retrofit) {
+        return retrofit.create(FakeStoreCategoryApi.class);
     }
+
     @Bean
     public FakeStoreProductApi fakeStoreProductApi(Retrofit retrofit) {
         return retrofit.create(FakeStoreProductApi.class);
-    }   
+    }
+
 }

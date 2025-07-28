@@ -1,13 +1,15 @@
 package com.example.ecommercespring.gateway.api;
 
+import java.io.IOException;
+
 import com.example.ecommercespring.dto.FakeStoreCategoryResponseDTO;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
-import java.io.IOException;
 public interface FakeStoreCategoryApi {
-    @GET("products/{id}")
-    Call<FakeStoreCategoryResponseDTO> getFakeProduct(@Path("id") Long id) throws IOException;
+
+    @GET("products/category")
+    Call<FakeStoreCategoryResponseDTO> getAllFakeCategories() throws IOException;
 }

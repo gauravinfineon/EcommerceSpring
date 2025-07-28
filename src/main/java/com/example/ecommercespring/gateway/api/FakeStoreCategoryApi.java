@@ -8,6 +8,6 @@ import retrofit2.http.GET;
 
 import java.io.IOException;
 public interface FakeStoreCategoryApi {
-    @GET("products/category")
-    Call<FakeStoreCategoryResponseDTO> getAllFakeCategories() throws IOException;
+    @GET("products/{id}")
+    Call<FakeStoreCategoryResponseDTO> getFakeProduct(@Path("id") Long id) throws IOException;
 }

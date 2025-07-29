@@ -8,7 +8,8 @@ public class FakeStoreUserResponseDTO{
     private UserDTO user;
     private String message;
     private String status;
+    
     public UserDTO getUser() {
-        return user; // Add this getter method
+        return user; 
     }
 }

@@ -13,7 +13,7 @@ public class FakeStoreCategoryGateway implements ICategoryGateway{
 
     private final FakeStoreCategoryApi fakeStoreCategoryApi;
 
-    public FakeStoreCategoryGateway(FakeStoreCategoryApi fakeStoreCategoryApi) {
+    public FakeStoreCategoryGateway( FakeStoreCategoryApi fakeStoreCategoryApi) {
         this.fakeStoreCategoryApi = fakeStoreCategoryApi;
     }
 
